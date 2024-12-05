@@ -10,7 +10,9 @@ Table of Contents
 
 [Day 3](/day%203/)
 
-[day 4](/day%204/)
+[Day 4](/day%204/)
+
+[Day 5](/day%205/)
 ```
 TODO: Fix the code and clean up , 
       Improve O() and add description files
