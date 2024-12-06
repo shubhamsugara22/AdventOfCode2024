@@ -13,6 +13,8 @@ Table of Contents
 [Day 4](/day%204/)
 
 [Day 5](/day%205/)
+
+[Day 6](/day%206/)
 ```
 TODO: Fix the code and clean up , 
       Improve O() and add description files
