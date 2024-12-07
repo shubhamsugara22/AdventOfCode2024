@@ -15,6 +15,8 @@ Table of Contents
 [Day 5](/day%205/)
 
 [Day 6](/day%206/)
+
+[Day 7](/day%207/)
 ```
 TODO: Fix the code and clean up , 
       Improve O() and add description files
