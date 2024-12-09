@@ -20,6 +20,7 @@ Table of Contents
 
 [Day 8](/day%208/) ===> Part 2 redo
 
+[Day 9](/day%209/)
 ```
 TODO: Fix the code and clean up , 
       Improve O() and add description files
