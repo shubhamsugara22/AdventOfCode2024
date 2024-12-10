@@ -48,7 +48,7 @@ def calculate_scores(grid):
 
 # Main Execution
 if __name__ == "__main__":
-    # Provide the name of the input file
+    
     file_path = "path.txt"
     
     # Parse the map and calculate the total score
