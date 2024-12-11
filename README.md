@@ -23,6 +23,8 @@ Table of Contents
 [Day 9](/day%209/) ==> work on solutions
 
 [Day 10](/day%2010/)
+
+[Day 11](/day%2011/)
 ```
 TODO: Fix the code and clean up , 
       Improve O() and add description files
