@@ -25,6 +25,8 @@ Table of Contents
 [Day 10](/day%2010/)
 
 [Day 11](/day%2011/)
+
+[Day 12](/day%2012/)
 ```
 TODO: Fix the code and clean up , 
       Improve O() and add description files
