@@ -28,7 +28,6 @@ def count_stones_after_blinks_optimized(initial_stones, blinks):
     final_stone_counts = simulate_blinks_optimized(initial_stones, blinks)
     return sum(final_stone_counts.values())
 
-# Example input
 initial_stones = [2, 77706, 5847, 9258441, 0, 741, 883933, 12]
 blinks = 75
 
