@@ -29,6 +29,8 @@ Table of Contents
 [Day 12](/day%2012/) ===? Part 2 redo
 
 [Day 13](/day%2013/)
+
+[Day 14](/day%2014/)
 ```
 TODO: Fix the code and clean up , 
       Improve O() and add description files
