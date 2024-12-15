@@ -32,7 +32,7 @@ Table of Contents
 
 [Day 14](/day%2014/)
 
-[Day 15](/day%2015/)
+[Day 15](/day%2015/) ==> 2 solution
 ```
 TODO: Fix the code and clean up , 
       Improve O() and add description files
