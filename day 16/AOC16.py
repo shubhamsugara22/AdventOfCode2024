@@ -170,6 +170,6 @@ def solve_maze(grid):
 
 
 if __name__ == "__main__":
-    with open("maze+.txt", "r") as f:
+    with open("maze.txt", "r") as f:
         grid = [list(line.rstrip('\n')) for line in f]
     solve_maze(grid)
