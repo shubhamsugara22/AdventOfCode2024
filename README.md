@@ -39,6 +39,8 @@ Table of Contents
 [Day 17](/day%2017/)
 
 [Day 18](/day%2018/)
+
+[Day 19](/day%2019/)
 ```
 TODO: Fix the code and clean up , 
       Improve O() and add description files
