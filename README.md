@@ -41,6 +41,8 @@ Table of Contents
 [Day 18](/day%2018/)
 
 [Day 19](/day%2019/)
+
+[Day 20](/day%2020/)
 ```
 TODO: Fix the code and clean up , 
       Improve O() and add description files
