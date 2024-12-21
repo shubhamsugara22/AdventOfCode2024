@@ -44,7 +44,7 @@ Table of Contents
 
 [Day 20](/day%2020/)
 
-[Day 21](/day%2021/)
+[Day 21](/day%2021/) ==>Redo the solutions
 ```
 TODO: Fix the code and clean up , 
       Improve O() and add description files
