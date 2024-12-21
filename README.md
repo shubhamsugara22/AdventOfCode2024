@@ -43,6 +43,8 @@ Table of Contents
 [Day 19](/day%2019/)
 
 [Day 20](/day%2020/)
+
+[Day 21](/day%2021/)
 ```
 TODO: Fix the code and clean up , 
       Improve O() and add description files
