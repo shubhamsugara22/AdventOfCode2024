@@ -45,6 +45,8 @@ Table of Contents
 [Day 20](/day%2020/)
 
 [Day 21](/day%2021/) ==>Redo the solutions
+
+[Day 22](/day%2022/)
 ```
 TODO: Fix the code and clean up , 
       Improve O() and add description files
