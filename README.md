@@ -50,7 +50,7 @@ Table of Contents
 
 [Day 23](/day%2023/)
 
-[Day 24](/day%2024/)
+[Day 24](/day%2024/) ==> Part2 redo
 ```
 TODO: Fix the code and clean up , 
       Improve O() and add description files
