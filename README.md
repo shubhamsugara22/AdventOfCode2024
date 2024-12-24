@@ -49,6 +49,8 @@ Table of Contents
 [Day 22](/day%2022/)
 
 [Day 23](/day%2023/)
+
+[Day 24](/day%2024/)
 ```
 TODO: Fix the code and clean up , 
       Improve O() and add description files
