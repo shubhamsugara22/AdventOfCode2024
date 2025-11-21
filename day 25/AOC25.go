@@ -21,7 +21,9 @@ func parseSchematics(filePath string) ([][]string, [][]string) {
 		content += scanner.Text() + "\n"
 	}
 
-	schematics := strings.Split(strings.TrimSpace(content), "\n\n")
+	// Handle both Unix and Windows line endings
+	contentStr := strings.ReplaceAll(content, "\r\n", "\n")
+	schematics := strings.Split(strings.TrimSpace(contentStr), "\n\n")
 	var locks, keys [][]string
 
 	for _, schematic := range schematics {

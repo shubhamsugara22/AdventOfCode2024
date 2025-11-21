@@ -17,9 +17,11 @@ func parseInputFile(filePath string) ([]Rule, [][]int, error) {
 		return nil, nil, err
 	}
 
-	sections := strings.Split(strings.TrimSpace(string(content)), "\n\n")
+	// Handle both Unix and Windows line endings
+	contentStr := strings.ReplaceAll(string(content), "\r\n", "\n")
+	sections := strings.Split(strings.TrimSpace(contentStr), "\n\n")
 	if len(sections) != 2 {
-		return nil, nil, fmt.Errorf("invalid input format")
+		return nil, nil, fmt.Errorf("invalid input format: expected 2 sections, got %d", len(sections))
 	}
 
 	// Parse rules

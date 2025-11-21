@@ -58,7 +58,9 @@ func main() {
 		return
 	}
 
-	scenarios := strings.Split(strings.TrimSpace(string(content)), "\n\n")
+	// Handle both Unix and Windows line endings
+	contentStr := strings.ReplaceAll(string(content), "\r\n", "\n")
+	scenarios := strings.Split(strings.TrimSpace(contentStr), "\n\n")
 	answer := 0
 	
 	for _, scenario := range scenarios {
