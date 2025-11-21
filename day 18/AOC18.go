@@ -74,13 +74,12 @@ func main() {
 	for i, pos := range bytePositions {
 		if pos.x >= 0 && pos.x < gridSize && pos.y >= 0 && pos.y < gridSize {
 			grid[pos.y][pos.x] = '#'
-			if !bfsPathExists(grid, gridSize) {
+			if i >= 1024 && !bfsPathExists(grid, gridSize) {
 				fmt.Printf("First blocking byte: %d,%d\n", pos.x, pos.y)
 				return
 			}
 		}
-		if i >= 1024 {
-			break
-		}
 	}
+	
+	fmt.Println("No blocking byte found")
 }
