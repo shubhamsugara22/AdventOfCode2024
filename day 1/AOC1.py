@@ -57,6 +57,7 @@ def main():
     # Print detailed results
     print("Detailed Scoring Breakdown:")
     for item, details in result['individual_scores'].items():
+        pass  # Detailed output commented out for brevity
         #print(f"Element {details['value']}:")
         #print(f"  Frequency in list2: {details['frequency']}")
         #print(f"  Score: {details['score']}")
