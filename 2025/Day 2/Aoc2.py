@@ -65,6 +65,6 @@ def solve_part2(filename):
 
 
 # Run it
-file_path = "/mnt/data/Input_day_2"  # adjust if needed
+file_path = "input_day_2"  # adjust if needed
 answer = solve_part2(file_path)
 print("Part 2 sum of invalid IDs =", answer)
