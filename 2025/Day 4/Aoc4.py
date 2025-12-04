@@ -63,30 +63,112 @@ def count_accessible_rolls(grid_lines: List[str], mark: bool = False) -> Tuple[i
     return accessible_count, marked_lines
 
 
+def find_accessible_positions(grid: List[List[str]]) -> List[Tuple[int,int]]:
+    """
+    Find all positions of accessible '@' rolls in the current grid state.
+    
+    Logic for Part 2:
+    - Identifies which rolls can be removed in the current iteration
+    - Returns list of (row, col) tuples for all accessible rolls
+    - Used iteratively to simulate removing accessible rolls until none remain
+    """
+    rows = len(grid)
+    cols = len(grid[0]) if rows else 0
+    neighbors = [(-1,-1), (-1,0), (-1,1), (0,-1), (0,1), (1,-1), (1,0), (1,1)]
+    accessible = []
+
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] != '@':
+                continue
+            # Count adjacent '@' rolls
+            adj_at = 0
+            for dr, dc in neighbors:
+                nr, nc = r + dr, c + dc
+                if 0 <= nr < rows and 0 <= nc < cols and grid[nr][nc] == '@':
+                    adj_at += 1
+                    if adj_at >= 4:
+                        break
+            # If fewer than 4 neighbors, it's accessible
+            if adj_at < 4:
+                accessible.append((r, c))
+    return accessible
+
+
+def remove_iteratively(grid_lines: List[str], verbose: bool = False) -> Tuple[int, List[str]]:
+    """
+    Part 2: Iteratively remove all accessible rolls until none remain.
+    
+    Logic:
+    - In each round, find all accessible rolls
+    - Remove them all simultaneously (replace '@' with '.')
+    - Repeat until no accessible rolls remain
+    - Count total rolls removed across all rounds
+    
+    This simulates a forklift continuously picking up accessible rolls
+    until they're all gone.
+    """
+    # Convert to mutable grid
+    grid = [list(line.rstrip("\n")) for line in grid_lines if line.strip() != ""]
+    total_removed = 0
+    round_no = 0
+
+    while True:
+        accessible = find_accessible_positions(grid)
+        if not accessible:
+            break
+
+        round_no += 1
+        if verbose:
+            print(f"Round {round_no}: removing {len(accessible)} rolls")
+
+        # Remove them all simultaneously (replace '@' with '.')
+        for (r, c) in accessible:
+            grid[r][c] = '.'
+
+        total_removed += len(accessible)
+
+    # Convert grid back to lines if caller wants final state
+    final_lines = ["".join(row) for row in grid]
+    return total_removed, final_lines
+
+
 # ---------- Helper to run on a file ----------
 def solve_file(path: str, mark: bool = False):
     """
-    Read grid from file and solve the problem.
+    Read grid from file and solve both parts.
     
     Logic:
     - Load the grid from input file
-    - Count accessible rolls using the main algorithm
-    - Optionally display the marked grid showing which rolls are accessible
+    - Part 1: Count accessible rolls using the initial state
+    - Part 2: Iteratively remove rolls until none remain, count total removed
     """
     with open(path, "r") as f:
         lines = [line.rstrip("\n") for line in f]
+    
+    # Part 1: Initial accessible rolls
     count, marked = count_accessible_rolls(lines, mark=mark)
+    print("="*50)
+    print("PART 1: Initial accessible rolls")
+    print("="*50)
     print("Accessible rolls:", count)
     if mark:
         print("\nMarked grid (x = accessible):\n")
         for line in marked:
             print(line)
-    return count
+    
+    # Part 2: Iteratively remove all rolls
+    print("\n" + "="*50)
+    print("PART 2: Remove rolls iteratively")
+    print("="*50)
+    total, final_grid = remove_iteratively(lines, verbose=True)
+    print("\nTotal rolls removed:", total)
+    
+    return count, total
 
 
-# ---------- Self-test using the example from prompt ----------
+# ---------- Self-test with example ----------
 if __name__ == "__main__":
-    # Test with a small example grid
     example = [
         "..@@.@@@@.",
         "@@@.@.@.@@",
@@ -100,15 +182,23 @@ if __name__ == "__main__":
         "@.@.@@@.@."
     ]
 
-    # Test the algorithm on the example
+    print("EXAMPLE TEST:")
+    print("="*50)
+    
+    # Test Part 1
     cnt, marked_grid = count_accessible_rolls(example, mark=True)
-    print("Example accessible count (expected 13):", cnt)
+    print("Part 1 - Example accessible count (expected 13):", cnt)
     print("\nExample marked grid:")
     for line in marked_grid:
         print(line)
+    
+    # Test Part 2
+    print("\nPart 2 - Example iterative removal:")
+    total_removed, final_state = remove_iteratively(example, verbose=True)
+    print("Example total removed (expected 43):", total_removed)
 
-    # Run on the actual input file for the final answer
-    print("\n" + "="*50)
-    print("Running on actual input file:")
-    print("="*50 + "\n")
-    solve_file("input_day_4", mark=True)
+    # Run on the actual input file for final answers
+    print("\n\n" + "="*60)
+    print("ACTUAL INPUT FILE:")
+    print("="*60 + "\n")
+    solve_file("input_day_4", mark=False)
