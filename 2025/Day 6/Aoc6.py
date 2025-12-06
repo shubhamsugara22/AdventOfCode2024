@@ -1,76 +1,170 @@
 def solve_day6(filename):
-    # Read input lines and pad to equal width
-    with open(filename, "r") as f:
-        rows = [line.rstrip("\n") for line in f]
+    """Solve cephalopod math worksheet.
 
-    if not rows:
+    Input is a small number of rows (numbers) with a final row of operators.
+    Problems are arranged horizontally and separated by full-blank columns.
+    For each problem, read the vertical numbers (all rows except the last),
+    apply the operator from the last row (+ or *), and sum all problem results.
+    """
+    with open(filename, 'r') as f:
+        lines = f.read().splitlines()
+
+    if not lines:
         return 0
 
-    width = max(len(r) for r in rows)
-    grid = [r.ljust(width) for r in rows]
+    # Normalize line lengths
+    max_len = max(len(line) for line in lines)
+    lines = [line.ljust(max_len) for line in lines]
+    num_rows = len(lines)
 
-    # Transpose into columns (each column is a string of characters from top to bottom)
-    cols = ["".join(grid[y][x] for y in range(len(grid))) for x in range(width)]
-
-    # Split contiguous non-blank columns into separate problems
+    # Find problem column ranges by scanning for blank columns
     problems = []
-    current = []
-    for col in cols:
-        if col.strip() == "":
-            if current:
-                problems.append(current)
-                current = []
-        else:
-            current.append(col)
-    if current:
-        problems.append(current)
+    in_problem = False
+    start = 0
+    for col in range(max_len):
+        is_blank = all(lines[row][col].isspace() for row in range(num_rows))
+        if not is_blank and not in_problem:
+            in_problem = True
+            start = col
+        elif is_blank and in_problem:
+            in_problem = False
+            problems.append((start, col))
+    if in_problem:
+        problems.append((start, max_len))
 
-    total_sum = 0
-
-    # Process each problem block
-    for problem in problems:
-        # Reconstruct the rows for this problem by joining the columns that belong to it
-        block_rows = ["".join(col[row_idx] for col in problem) for row_idx in range(len(rows))]
-
+    total = 0
+    for start, end in problems:
+        # Collect numbers from all rows except last
         numbers = []
-        op = None
-
-        # Parse each line in the block. Lines may contain multiple tokens separated by whitespace.
-        for line in block_rows:
-            tokens = line.split()
-            if not tokens:
+        for row in range(num_rows - 1):
+            chunk = lines[row][start:end].strip()
+            if not chunk:
                 continue
-            for tok in tokens:
-                if tok in ("+", "*"):
-                    op = tok
-                else:
-                    # Try to parse integer tokens; skip non-integer tokens silently
-                    try:
-                        numbers.append(int(tok))
-                    except ValueError:
-                        # If token is not an int and not an operator, ignore it
-                        continue
+            # chunk should be a single integer, but if it contains multiple tokens
+            # pick the last token (right-aligned numbers) as a fallback
+            tokens = chunk.split()
+            try:
+                numbers.append(int(tokens[-1]))
+            except Exception:
+                continue
 
+        # Operator is on the last row
+        op_chunk = lines[-1][start:end].strip()
+        op = None
+        if op_chunk:
+            # operator chunk might contain spaces; take first non-space char
+            for ch in op_chunk:
+                if ch in ('+', '*'):
+                    op = ch
+                    break
+
+        if not numbers or op is None:
+            continue
+
+        # Compute the problem result
+        res = numbers[0]
+        if op == '+':
+            for n in numbers[1:]:
+                res += n
+        else:  # '*'
+            for n in numbers[1:]:
+                res *= n
+
+        total += res
+
+    return total
+
+
+def solve_day6_part2(filename):
+    """Part 2: numbers are written right-to-left in columns.
+
+    For each problem block, read columns from right to left. Each column
+    (within the problem) contains the digits of a single number stacked
+    top-to-bottom (most significant at top). Extract each column's digits,
+    parse into integers (skipping empty columns), then apply the operator
+    (from the last row) to the numbers in that right-to-left order.
+    """
+    with open(filename, 'r') as f:
+        lines = f.read().splitlines()
+
+    if not lines:
+        return 0
+
+    max_len = max(len(line) for line in lines)
+    lines = [line.ljust(max_len) for line in lines]
+    num_rows = len(lines)
+
+    # Find problem boundaries (same as part1)
+    problems = []
+    in_problem = False
+    start = 0
+    for col in range(max_len):
+        is_blank = all(lines[row][col].isspace() for row in range(num_rows))
+        if not is_blank and not in_problem:
+            in_problem = True
+            start = col
+        elif is_blank and in_problem:
+            in_problem = False
+            problems.append((start, col))
+    if in_problem:
+        problems.append((start, max_len))
+
+    total = 0
+    for start, end in problems:
+        # operator for this problem
+        op_chunk = lines[-1][start:end]
+        op = None
+        for ch in op_chunk:
+            if ch in ('+', '*'):
+                op = ch
+                break
         if op is None:
-            raise ValueError("Operation not found in problem block; expected '+' or '*'.")
+            continue
 
-        # Compute the problem value depending on the operator
-        if op == "+":
-            value = sum(numbers)
-        else:  # op == '*'
-            value = 1
-            for n in numbers:
-                value *= n
+        # collect numbers by reading columns right-to-left
+        numbers = []
+        for col in range(end - 1, start - 1, -1):
+            # build digit string top->bottom from rows 0..num_rows-2
+            digits = []
+            for row in range(num_rows - 1):
+                ch = lines[row][col]
+                if not ch.isspace():
+                    digits.append(ch)
+            if not digits:
+                continue
+            num_str = ''.join(digits)
+            try:
+                numbers.append(int(num_str))
+            except Exception:
+                # if parsing fails, skip this column
+                continue
 
-        total_sum += value
+        if not numbers:
+            continue
 
-    return total_sum
+        # compute result
+        res = numbers[0]
+        if op == '+':
+            for n in numbers[1:]:
+                res += n
+        else:
+            for n in numbers[1:]:
+                res *= n
+
+        total += res
+
+    return total
 
 
-if __name__ == "__main__":
-    # Run on local input file named `input_day_6` in the same directory
-    try:
-        result = solve_day6("input_day_6")
-        print("Total sum for Day 6:", result)
-    except FileNotFoundError:
-        print("Input file 'input_day_6' not found in the current directory.")
+if __name__ == '__main__':
+    import os
+
+    fname = 'input_day_6'
+    if not os.path.exists(fname):
+        print("Input file 'input_day_6' not found.")
+    else:
+        p1 = solve_day6(fname)
+        p2 = solve_day6_part2(fname)
+        print('Day 6 - Part 1:', p1)
+        print('Day 6 - Part 2:', p2)
+
